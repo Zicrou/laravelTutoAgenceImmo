@@ -35,7 +35,7 @@ Route::get('/dashboard', function () {
 
 //Route::get('/images/{path}', [\App\Http\Controllers\ImagesController::class,'show'])->where('path', '.*');
 
-Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () use ($idRegex){
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(function () use ($idRegex){
     Route::resource('property', \App\Http\Controllers\Admin\PropertyController::class)->except(['show']);
     Route::resource('option', \App\Http\Controllers\Admin\OptionController::class)->except(['show']);
     Route::delete('picture/{picture}', [\App\Http\Controllers\Admin\OptionController::class, 'destroy'])
