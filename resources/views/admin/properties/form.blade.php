@@ -4,13 +4,14 @@
 @section('content')
 
     <h1>@yield('title')</h1>
-    <form class="vstack gap-2" action="{{ route($property->exists ? 'admin.property.update' : 'admin.property.store', $property) }}" method="post">
+    <form class="vstack gap-2" action="{{ route($property->exists ? 'admin.property.update' : 'admin.property.store', $property) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method($property->exists ? 'put' : 'post')
-
+        <input type="file" class="form-control" name="image[]" multiple />
         <div class="row">
-            @include('shared.input', ['class' => 'col', 'label' => 'Titre', 'name' => 'title', 'value' => $property->title])
-                <div class="col row">
+        
+        <div class="col row">
+                    @include('shared.input', ['class' => 'col', 'label' => 'Titre', 'name' => 'title', 'value' => $property->title])
                     @include('shared.input', ['class' => 'col', 'name' => 'surface', 'value' => $property->surface])
                     @include('shared.input', ['class' => 'col', 'name' => 'price', 'label' => 'Prix', 'value' => $property->price])
                 </div>

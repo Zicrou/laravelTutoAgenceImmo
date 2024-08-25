@@ -23,9 +23,13 @@ Route::get('/biens/{slug}-{property}', [\App\Http\Controllers\PropertyController
     'slug' => $slugRegex
 ]);
 
-Route::post('/biens/{property}-/contact', [App\Http\Controllers\PropertyController::class,'contact'])->name('property.name')->where([
+Route::post('/biens/{property}-/contact', [App\Http\Controllers\PropertyController::class,'contact'])->name('property.contact')->where([
     'property' => $idRegex
 ]);
+
+Route::get('/upload-image', [App\Http\Controllers\ImageUploadController::class, 'upload_image'])->name('upload.image');
+Route::post('/store-image', [App\Http\Controllers\ImageUploadController::class, 'store_image'])->name('store.image');
+Route::get('/show-image', [App\Http\Controllers\ImageUploadController::class, 'show_image'])->name('store.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

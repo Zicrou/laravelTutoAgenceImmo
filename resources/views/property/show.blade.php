@@ -5,42 +5,78 @@
 @section('content')
 
     <div class="container mt-4">
-        <h1>{{ $property->title }}</h1>
-        <h2>{{ $property->rooms }} piéces - {{ $property->surface }}m²</h2>
-
-        <div class="text-primary fw-bold" style="font-size: 4rem;">
-            {{ number_format($property->price, thousands_separator: ' ') }}£
-        </div>
-
+        
         <hr>
 
         <div class="mt-4">
-            <h4>Intéressé par ce bien ?</h4>
+            @php
+                $pathImage = "images/uploads/property/".$property->id.'/';
+                //dd($images)
+                
+            @endphp
+            @foreach ($images as $img)
+            <img class="d-block w-100" style="height:100px; object-fit:cover;" src="{{ asset($img->image) }}" alt="">
 
-            @include('shared.flash')
-
-            <form action="{{ route('property.contact', $property) }}" method="post" class="vstack gap-3">
-                @csrf
-                <div class="row">
-                    <x-input class="col" name="firstname" label="Prénom" value="" />
-                    @include('shared.input', ['class' => 'col', 'name' => 'firstname', 'label' => 'Prénom'])
-                    @include('shared.input', ['class' => 'col', 'name' => 'lastname', 'label' => 'Nom'])
+            @endforeach
+            <div class="row">
+                <div class="col">
+                    <h1>Image</h1>
+                    @if ($images)
+                        @foreach ($images as $img)
+                        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img class="d-block w-100" style="height:100px; object-fit:cover;" src="{{ asset($img->image) }}" alt="">
+                                </div>
+                                
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
+                <div class="col">
+                    <h1><strong>{{ $property->title }}</strong></h1>
+                    <h2>{{ $property->rooms }} piéces - {{ $property->surface }}m²</h2>
 
-                <div class="row">
-                    @include('shared.input', ['class' => 'col', 'name' => 'phone', 'label' => 'Téléphone'])
-                    @include('shared.input', ['type' => 'email', 'class' => 'col', 'name' => 'email', 'label' => 'Email'])
-                </div>
+                    <div class="text-primary fw-bold" style="font-size: 4rem;">
+                        {{ number_format($property->price, thousands_separator: ' ') }}£
+                    </div>
 
-                @include('shared.input', ['type' => 'textarea', 'class' => 'col', 'name' => 'message', 'label' => 'Votre message'])
-                <div>
-                    <button class="btn btn-primary">
-                        Nous contacter
-                    </button>
+                    <h4>Intéressé par ce bien ?</h4>
+                    @include('shared.flash')
+
+                    <form action="{{ route('property.contact', $property) }}" method="post" class="vstack gap-3">
+                        @csrf
+                        <div class="row">
+                            <x-input class="col" name="firstname" label="Prénom" value="" />
+                            @include('shared.input', ['class' => 'col', 'name' => 'firstname', 'label' => 'Prénom'])
+                            @include('shared.input', ['class' => 'col', 'name' => 'lastname', 'label' => 'Nom'])
+                        </div>
+
+                        <div class="row">
+                            @include('shared.input', ['class' => 'col', 'name' => 'phone', 'label' => 'Téléphone'])
+                            @include('shared.input', ['type' => 'email', 'class' => 'col', 'name' => 'email', 'label' => 'Email'])
+                        </div>
+
+                        @include('shared.input', ['type' => 'textarea', 'class' => 'col', 'name' => 'message', 'label' => 'Votre message'])
+                        <div>
+                            <button class="btn btn-primary">
+                                Nous contacter
+                            </button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
-       
+
         <div class="mt-4">
             <p>{!! nl2br($property->description) !!}</p>
         </div>

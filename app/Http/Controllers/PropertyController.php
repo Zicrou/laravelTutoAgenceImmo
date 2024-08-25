@@ -33,13 +33,15 @@ class PropertyController extends Controller
 
     public function show(string $slug, Property $property)
     {
+        
         $expectedSlug = $property->getSlug();
         if($slug !== $expectedSlug){
             return to_route('property.show', ['slug' => $expectedSlug, 'property' => $property]);
         }
-
+        //$property->images);
         return view('property.show', [
-            'property' => $property
+            'property' => $property,
+            'images' => $property->images
         ]);
     } 
 

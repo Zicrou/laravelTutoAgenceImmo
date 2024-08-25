@@ -29,11 +29,12 @@ class PropertyFormRequest extends FormRequest
             'bedrooms' => ['required', 'integer', 'min:0'],
             'floor' => ['required', 'integer', 'min:0'],
             'price' => ['required', 'integer', 'min:0'],
-            'city' => ['required', 'min:8'],
+            'city' => ['required', 'min:4'],
             'address' => ['required', 'min:8'],
             'postal_code' => ['required', 'min:3'],
             'sold' => ['required', 'boolean'],
-            'options' => ['array', 'exists:options,id', 'required']
+            'options' => ['array', 'exists:options,id', 'required'],
+            'image' => ['required','mimes:jpg,jpeg,png,gif', 'max:2000']
         ];
     }
 }

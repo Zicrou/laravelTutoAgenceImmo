@@ -6,8 +6,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+
+
+/**
+ * @mixin IdeHelperPost
+ */
 
 class Property extends Model
 {
@@ -27,11 +34,17 @@ class Property extends Model
         'address', //=> ['','',''],
         'postal_code', //=> ['','',''],
         'sold', //=> ['','','']
+        'image'
     ];
 
     public function options(): BelongsToMany
     {
         return $this->belongsToMany(Option::class);
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(ImageUpload::class);
     }
 
     public function getslug(): string
@@ -47,5 +60,9 @@ class Property extends Model
     public function scopeRecent(Builder $builder)
     {
         return $builder->orderBy('created_at', 'desc');
+    }
+
+    public function imageUrl(): string{
+        return Storage::disk('public')->url($this->images);
     }
 }

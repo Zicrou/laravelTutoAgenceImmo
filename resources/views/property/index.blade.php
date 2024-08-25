@@ -19,6 +19,7 @@
     <div class="container">
         <div class="row">
             @forelse ($properties as $property)
+            
                 <div class="col-3 mb-4">
                     @include('property.card')
                 </div>
