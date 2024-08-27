@@ -55,65 +55,57 @@ class PropertyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PropertyFormRequest $request)
+    public function store(Request $request)
     {
-        dd($request->image[0]);
-        // $data = $request->validated();
-        // // Enregistrer la property aprés $check is true ou bien l'enregistrer ici directement
-        // $property = Property::create($request->except('image'));
-        // $property->options()->sync($request->validated('options'));
-        $check = '';
-        $imageName = '';
         
-        
+        $data = $this->validate($request, [
+            'title' => ['required', 'min:8'],
+            'description' => ['required', 'min:8'],
+            'surface' => ['required', 'integer', 'min:10'],
+            'rooms' => ['required','integer', 'min:1'],
+            'bedrooms' => ['required', 'integer', 'min:0'],
+            'floor' => ['required', 'integer', 'min:0'],
+            'price' => ['required', 'integer', 'min:0'],
+            'city' => ['required', 'min:4'],
+            'address' => ['required', 'min:8'],
+            'postal_code' => ['required', 'min:3'],
+            'sold' => ['required', 'boolean'],
+            'options' => ['array', 'exists:options,id', 'required'],
+            'image' => ['required|mimes:jpg, jpeg, png, bmp']
+            ]);
         /**
          * @var UploadedFile|null $image
          */
+        $property = Property::create($request->validate());
         if($request->hasFile('image'))
-        {
-            $allowedfileExtension=['pdf', 'webp','jpg', 'jpeg','png','docx'];
-            $files = $request->file('image');
-
-            $firstFile = $request->file('image')[0];
-            $firstFile_filename = $firstFile->getClientOriginalName();
-            $firstFile_extension = $firstFile->getClientOriginalExtension();
-            $firstFile_check = in_array($firstFile_extension,$allowedfileExtension);
-            if ($firstFile_check) {
-                $request->image = $firstFile_filename;
-                $data = $request->validated();
-                $property = Property::create($request->validated());
-                $property->options()->sync($request->validated('options'));
-            }
-
-            foreach($files as $file){
-                $filename = $file->getClientOriginalName();
-                $extension = $file->getClientOriginalExtension();
-                $check=in_array($extension,$allowedfileExtension);
-                
-                if($check)
-                {
-                    $firstImage = $request->image[0];
-                    $imageName = time().'-'.uniqid().'_'.$filename;
-                }
+            {
+                $allowedfileExtension=['pdf', 'webp','jpg', 'jpeg','png','docx'];
+                $files = $request->file('image');
+                foreach($files as $file){
+                    $filename = $file->getClientOriginalName();
+                    $extension = $file->getClientOriginalExtension();
+                    $check=in_array($extension,$allowedfileExtension);
                     
-                    $data['image'] = $file->move('images/uploads/property/', $imageName);
-                    
-                    $data['imageName'] = $imageName;
+                    if($check)
+                    {
+                        $imageName = time().'-'.uniqid().'_'.$filename;
+                        $data['image'] = $file->move('images/uploads/property/', $imageName);
+                        foreach ($request->image as $img) {
+                            
+                            ImageUpload::create([
+                                'property_id' => $property->id,
+                                'image' => $imageName,
+                            ]);
+                        }
+                    }
+
                 }
             }
-            $request->image = $request->image[0];
-
-
-            foreach ($request->image as $img) {
-                $img = ImageUpload::create([
-                    'property_id' => $property->id,
-                    'image' => $imageName,
-                ]);
-            }
-            return to_route('admin.property.index')->with('success', 'Le bien a bien été créé');
-        }
-    
-
+            
+        // Enregistrer la property aprés $check is true ou bien l'enregistrer ici directement
+        
+        $property->options()->sync($request->validate(['options']));
+        return to_route('admin.property.index')->with('success', 'Le bien a bien été modifié');
     }
 
      
@@ -177,14 +169,60 @@ class PropertyController extends Controller
                         //if($imageValidated){
                             $imageName = time().'-'.uniqid().'_'.$filename;
                             $data['image'] = $file->move('images/uploads/property/'.$property->id.'/', $imageName);
-                            dd($data);
                         //}
                     }
 
                 }
             }
 
-        
+        return $data;
+    }
+
+    public function extractDataFirstImageProperty(Request $request): array
+    {
+        $property = '';
+        $data = $this->validate($request, [
+            'title' => ['required', 'min:8'],
+            'description' => ['required', 'min:8'],
+            'surface' => ['required', 'integer', 'min:10'],
+            'rooms' => ['required','integer', 'min:1'],
+            'bedrooms' => ['required', 'integer', 'min:0'],
+            'floor' => ['required', 'integer', 'min:0'],
+            'price' => ['required', 'integer', 'min:0'],
+            'city' => ['required', 'min:4'],
+            'address' => ['required', 'min:8'],
+            'postal_code' => ['required', 'min:3'],
+            'sold' => ['required', 'boolean'],
+            'options' => ['array', 'exists:options,id', 'required'],
+            'image'=> ['required','mime:jpg, jpeg, png, webp, gif']
+            ]);
+        /**
+         * @var UploadedFile|null $image
+         */
+
+        if($request->hasFile('image'))
+        {
+            $allowedfileExtension=['pdf', 'webp','jpg', 'jpeg','png','docx'];
+            $file = $request->file('image')[0];
+            
+            $filename = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $check=in_array($extension,$allowedfileExtension);
+            $imageValidated = $request->validate(['image']);
+            if($check)
+            {
+                if($imageValidated == null || $imageValidated->getError())
+                {
+                    return $data;
+                }
+                $imageName = time().'-'.uniqid().'_'.$filename;
+                
+                $data['image'] = $file->move('images/uploads/property', $imageName);
+            }else{
+                return $data;
+            }
+
+        }
         return $data;
     }
 

@@ -17,12 +17,12 @@ class ImageUploadController extends Controller
     public function store_image(Request $request)
     {
         $request->validate([
-            'image' => 'required|mimes:jpg, jpeg, png, bmp',
+            'image' => 'required', 'mimes:jpg, jpeg, png, bmp',
         ]);
 
         $image = '';
         if($image = $request->file('image')){
-            $imageName = time().'-'.uniqid().'.'.$image->getClientOriginalExtension();
+            $imageName = time().'-'.uniqid().'_'.$image->getClientOriginalExtension();
             $image->move('images/uploads/property', $imageName);
         }
         $imageUploaded = ImageUpload::create([
