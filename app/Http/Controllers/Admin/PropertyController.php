@@ -57,9 +57,43 @@ class PropertyController extends Controller
      */
     public function store(PropertyFormRequest $request)
     {
-        $property = Property::create($request->validated());
-        $property->options()->sync($request->validate(['options']));
-        return to_route('admin.property.index')->with('success', 'Le bien a bien été créé');
+        $data = $request->validated();
+        // Enregistrer la property aprés $check is true ou bien l'enregistrer ici directement
+        $property = Property::create($request->except('image'));
+        $property->options()->sync($request->validated('options'));
+        $check = '';
+        $imageName = '';
+        
+        /**
+         * @var UploadedFile|null $image
+         */
+        if($request->hasFile('image'))
+        {
+            $allowedfileExtension=['pdf', 'webp','jpg', 'jpeg','png','docx'];
+            $files = $request->file('image');
+            foreach($files as $file){
+                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                $check=in_array($extension,$allowedfileExtension);
+                
+                if($check)
+                {
+                    $imageName = time().'-'.uniqid().'_'.$filename;
+                    $data['image'] = $file->move('images/uploads/property/'.$property->id.'/', $imageName);
+                    $data['imageName'] = $imageName;
+                    
+                    foreach ($request->image as $img) {
+                        $img = ImageUpload::create([
+                            'property_id' => $property->id,
+                            'image' => $imageName,
+                        ]);
+                    }
+                    return to_route('admin.property.index')->with('success', 'Le bien a bien été créé');
+                }else{
+                    return $data;
+                }
+            }
+        }
     }
 
      
@@ -81,9 +115,14 @@ class PropertyController extends Controller
      */
     public function update(PropertyFormRequest $request, Property $property)
     {
-        //dd($this->extractData($property, $request));
-        $property->options()->sync($request->validate(['options']));
+        $property->options()->sync($request->validated('options'));
         $property->update($this->extractData($property, $request));
+        foreach ($request->image as $img) {
+            $img = ImageUpload::create([
+                'property_id' => $property->id,
+                'image' => $imageName,
+            ]);
+        }
         return to_route('admin.property.index')->with('success', 'Le bien a bien été modifié');
     }
 
@@ -91,20 +130,41 @@ class PropertyController extends Controller
     {
         $data = $request->validated();
         
+        $check = '';
+        
         /**
          * @var UploadedFile|null $image
          */
-        
-        $imageValidated = $request->validated('image');
+        if($request->hasFile('image'))
+            {
+                $allowedfileExtension=['pdf', 'webp','jpg', 'jpeg','png','docx'];
+                $files = $request->file('image');
+                foreach($files as $file){
+                    $filename = $file->getClientOriginalName();
+                    $extension = $file->getClientOriginalExtension();
+                    $check=in_array($extension,$allowedfileExtension);
+                    
+                    if($check)
+                    {
+                        // $imageName = time().'_'.uniqid().'_'.$filename;
+                        // $data['image'] = $file->move('images/uploads/property/'.$property->id.'/', $imageName);
+                        //$imageValidated = $check; //$request->validated('image');
 
-        if($imageValidated == null || $imageValidated->getError())
-        {
-            return $data;
-        }
-        if($imageValidated){
-            $imageName = time().'-'.uniqid().'.'.$imageValidated->getClientOriginalExtension();
-            $data['image'] = $imageValidated->move('images/uploads/property/'.$property->id.'/', $imageName);
-        }
+                        // if($imageValidated == null || $imageValidated->getError)
+                        // {
+                        //     return $data;
+                        // }
+                        //if($imageValidated){
+                            $imageName = time().'-'.uniqid().'_'.$filename;
+                            $data['image'] = $file->move('images/uploads/property/'.$property->id.'/', $imageName);
+                            dd($data);
+                        //}
+                    }
+
+                }
+            }
+
+        
         return $data;
     }
 
