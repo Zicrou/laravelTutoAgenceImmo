@@ -57,12 +57,14 @@ class PropertyController extends Controller
      */
     public function store(PropertyFormRequest $request)
     {
-        $data = $request->validated();
-        // Enregistrer la property aprés $check is true ou bien l'enregistrer ici directement
-        $property = Property::create($request->except('image'));
-        $property->options()->sync($request->validated('options'));
+        dd($request->image[0]);
+        // $data = $request->validated();
+        // // Enregistrer la property aprés $check is true ou bien l'enregistrer ici directement
+        // $property = Property::create($request->except('image'));
+        // $property->options()->sync($request->validated('options'));
         $check = '';
         $imageName = '';
+        
         
         /**
          * @var UploadedFile|null $image
@@ -71,6 +73,18 @@ class PropertyController extends Controller
         {
             $allowedfileExtension=['pdf', 'webp','jpg', 'jpeg','png','docx'];
             $files = $request->file('image');
+
+            $firstFile = $request->file('image')[0];
+            $firstFile_filename = $firstFile->getClientOriginalName();
+            $firstFile_extension = $firstFile->getClientOriginalExtension();
+            $firstFile_check = in_array($firstFile_extension,$allowedfileExtension);
+            if ($firstFile_check) {
+                $request->image = $firstFile_filename;
+                $data = $request->validated();
+                $property = Property::create($request->validated());
+                $property->options()->sync($request->validated('options'));
+            }
+
             foreach($files as $file){
                 $filename = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
@@ -78,22 +92,28 @@ class PropertyController extends Controller
                 
                 if($check)
                 {
+                    $firstImage = $request->image[0];
                     $imageName = time().'-'.uniqid().'_'.$filename;
-                    $data['image'] = $file->move('images/uploads/property/'.$property->id.'/', $imageName);
-                    $data['imageName'] = $imageName;
+                }
                     
-                    foreach ($request->image as $img) {
-                        $img = ImageUpload::create([
-                            'property_id' => $property->id,
-                            'image' => $imageName,
-                        ]);
-                    }
-                    return to_route('admin.property.index')->with('success', 'Le bien a bien été créé');
-                }else{
-                    return $data;
+                    $data['image'] = $file->move('images/uploads/property/', $imageName);
+                    
+                    $data['imageName'] = $imageName;
                 }
             }
+            $request->image = $request->image[0];
+
+
+            foreach ($request->image as $img) {
+                $img = ImageUpload::create([
+                    'property_id' => $property->id,
+                    'image' => $imageName,
+                ]);
+            }
+            return to_route('admin.property.index')->with('success', 'Le bien a bien été créé');
         }
+    
+
     }
 
      
