@@ -27,9 +27,24 @@ Route::post('/biens/{property}-/contact', [App\Http\Controllers\PropertyControll
     'property' => $idRegex
 ]);
 
-Route::get('/upload-image', [App\Http\Controllers\ImageUploadController::class, 'upload_image'])->name('upload.image');
-Route::post('/store-image', [App\Http\Controllers\ImageUploadController::class, 'store_image'])->name('store.image');
-Route::get('/show-image', [App\Http\Controllers\ImageUploadController::class, 'show_image'])->name('store.show');
+Route::get('/images/{property}/upload', [\App\Http\Controllers\ImageUploadController::class, 'index'])
+    ->name('upload.image')
+    ->where([
+        'property' => $idRegex,
+    ]);
+Route::post('/images/{property}/upload', [App\Http\Controllers\ImageUploadController::class, 'store_image'])
+->name('store.image')
+->where([
+    'property' => $idRegex,
+]);
+Route::get('images/{property}/delete', [App\Http\Controllers\ImageUploadController::class, 'destroy'])
+->name('delete.image')
+->where([
+    'property' => $idRegex,
+]);
+
+//Route::get('/upload-image', [App\Http\Controllers\ImageUploadController::class, 'upload_image'])->name('upload.image');
+//Route::get('/show-image', [App\Http\Controllers\ImageUploadController::class, 'show_image'])->name('store.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

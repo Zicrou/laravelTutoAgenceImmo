@@ -1,5 +1,7 @@
 <?php
-
+@if(Session::has('message'))
+<p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+@endif
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
