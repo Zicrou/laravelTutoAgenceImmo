@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ImageUpload extends Model
 {
     use HasFactory;
+
+    protected $table = 'image_uploads';
     protected $fillable = ['image', 'property_id'];
     
     public function property() {

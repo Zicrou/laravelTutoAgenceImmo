@@ -22,7 +22,7 @@ class ImageFilterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => ['required','mimes:jpg,jpeg,png,gif', 'max:2000']
+            'image.*' => ['required','mimes:jpg,jpeg,png,gif,webp', 'max:2000']
         ];
     }
 }

@@ -2,44 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ImageFilterRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ImageUpload;
+use App\Models\Property;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\File;
+use Illuminate\Validation\Rules\ImageFile;
 
 class ImageUploadController extends Controller
 {
-    public function upload_image()
+    public function index(Property $property)
     {
-        return view('image_upload');
+        $propertyImages = $property->images()->get();
+        //$propertyImages = Property::where('product_id', $property->id)->get();
+        return view('image_upload', ['property' => $property, 'propertyImages' => $propertyImages]);
     }
 
-    public function store_image(Request $request)
+    public function store_image(ImageFilterRequest $request, Property $property)
     {
-        $request->validate([
-            'image' => 'required|mimes:jpg, jpeg, png, bmp',
-        ]);
+        $data = $request->validated();
+        if($images = $request->file('image')){
+            foreach ($images as $image) {
+                $filename = $image->getClientOriginalName();
+                $imageName = time().'-'.uniqid().'_'.$filename;
+                $path = 'images/uploads/property/'.$property->id.'/';
 
-        $image = '';
-        if($image = $request->file('image')){
-            $imageName = time().'-'.uniqid().'.'.$image->getClientOriginalExtension();
-            $image->move('images/uploads/property', $imageName);
+                $image->move($path, $imageName);
+                ImageUpload::create([
+                    'image' => $path.$imageName,
+                    'property_id' => $property->id
+                ]);
+            } 
         }
-        $imageUploaded = ImageUpload::create([
-            'image' => $imageName,
-        ]);
+        return to_route('upload.image', $property)->with('success', 'Le bien a bien été créé');
+    }
 
-        //dd($image);
-        //$property->options()->sync($request->validated(('options')));
-        //$property->options()->sync($request->validated(('options')));
+    public function destroy($imageUpload)
+    {
+        $image = ImageUpload::findOrFail($imageUpload);
+        if (File::exists($image->image)) {
+            File::delete($image->image);
+        }
+        $image->delete();
 
-        Session::flash('message','L\'image a bien été créer');
-        Session::flash('alert-class', 'alert-success');
-        return redirect()->back();
-
-        // return view('show_image', [
-        //     'images' => ImageUpload::orderBy('created_at', 'desc')->withTrashed()->paginate(25)
-        // ]);
-        //return to_route('')->with('success', 'L\'image a bien été créer');
+        return redirect()->back()->with('status', 'Image supprimé');
     }
 }

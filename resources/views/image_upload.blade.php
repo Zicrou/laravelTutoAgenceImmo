@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="title" style="float:left;">
-                            <h2 class="text-left">Add New Record</h2>
+                            <h2 class="text-left">{{ $property->title }}y</h2>
                         </div>
                     </div>
                     <div class="card-body">
@@ -21,23 +21,27 @@
                                 </ul>
                             </div>
                         @endif
-                        @if(Session::has('message'))
-                            <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
-                        @endif
-
-                        <form action="{{ route('store.image') }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('store.image', $property) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="mb-1">Image</label>
-                                        <input type="file" name="image" class="form-control" value="{{ old('image') }}">
+                                        <input type="file" name="image[]" multiple class="form-control" value="{{ old('image') }}">
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </form>
                     </div>
+                </div>
+            </div>
+            <div class="col-md-12 mt-4">
+                <div class="d-flex">
+                @foreach ( $propertyImages as $image )
+                    <img class="border p-2 m-2" src="{{ asset($image->image) }}" alt="image" style="width:400px;height:275px">
+                    <a href="{{ route('delete.image', $image->id) }}">Delete</a>
+                @endforeach
                 </div>
             </div>
         </div>
