@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ImageFilterRequest;
 use Illuminate\Http\Request;
@@ -36,7 +36,7 @@ class ImageUploadController extends Controller
                 ]);
             } 
         }
-        return to_route('upload.image', $property)->with('success', 'Le bien a bien été créé');
+        return to_route('admin.upload.image', $property)->with('success', 'Le bien a bien été créé');
     }
 
     public function destroy($imageUpload)

@@ -21,7 +21,7 @@
                                 </ul>
                             </div>
                         @endif
-                        <form action="{{ route('store.image', $property) }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('admin.store.image', $property) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
@@ -40,7 +40,7 @@
                 <div class="d-flex">
                 @foreach ( $propertyImages as $image )
                     <img class="border p-2 m-2" src="{{ asset($image->image) }}" alt="image" style="width:400px;height:275px">
-                    <a href="{{ route('delete.image', $image->id) }}">Delete</a>
+                    <a href="{{ route('admin.delete.image', $image->id) }}">Delete</a>
                 @endforeach
                 </div>
             </div>
