@@ -3,36 +3,52 @@
 @section('title', $property->title)
 
 @section('content')
-
+<style>
+    .carousel-indicators img{
+        width: 70px;
+        display: block;
+    }
+    .carousel-indicators button{
+        width: max-content!important;
+    }
+</style>
     <div class="container mt-4">
         
         <hr>
 
         <div class="mt-4">
-            <!-- <img class="d-block w-100" style="height:100px; object-fit:cover;" src="{{ asset($property->image) }}" alt=""> -->
             <div class="row">
                 <div class="col">
-                    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel slide" id="carouselDemo" data-bs-wrap="true" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        @foreach ($images as $key => $image )
+                                <button type="button" data-bs-target="#carouselDemo" data-bs-slide-to="{{$key}}" class="{{ $key == 0 ? 'active' : '' }}" aria-current="true" aria-label="Slide {{ $key }}" >
+                                    <img src="{{ asset($image->image) }}" alt=""/>
+                                </button>
+                        @endforeach
+                        
+                    </div>
                         <div class="carousel-inner">
-                            <div class="carousel-inner">
-                                @foreach ($images as $key => $image )
-                                    <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                                        <img class="d-block w-100" style="object-fit:cover;" src="{{ asset($image->image) }}" alt="">
-                                        <div class="carousel-caption">
-                                            <h5>{{ $image->title }}</h5>
-                                        </div>
-                                    </div>
-                                @endforeach
+                        @foreach ($images as $key => $image )
+                            <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                                <img class="d-block w-100" style="object-fit:cover;" src="{{ asset($image->image) }}" alt="">
+                                <div class="carousel-caption">
+                                    <h5>{{ $property->title }}</h5>
+                                </div>
+                            </div>
+                        @endforeach
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselDemo" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselDemo" data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
+                            <div class="carousel-indicators">
+                                @for ($i = 0; $i >= $images->count(); $i++)
+                                    <button type="button" class="border"></button>            
+                                @endfor
                             </div>
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
                     </div>
                 </div>
                 <div class="col">
