@@ -1,7 +1,50 @@
 <?php
+<div class="carousel slide" id="carouselDemo">
+<div class="carousel-inner">
+    @foreach ($images as $key => $image )
+        <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+            <img class="d-block w-100" style="object-fit:cover;" src="{{ asset($image->image) }}" alt="">
+            <div class="carousel-caption">
+                <h5>{{ $image->title }}</h5>
+            </div>
+        </div>
+    @endforeach
+</div>
+</div>
+<button class="carousel-control-prev" type="button" data-bs-target="#carouselDemo" data-bs-slide="prev">
+<span class="carousel-control-prev-icon"></span>
+</button>
+<button class="carousel-control-next" type="button" data-bs-target="#carouselDemo" data-bs-slide="next">
+<span class="carousel-control-next-icon"></span>
+</button>
+
+
+
+
+
+
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+<div class="carousel-inner">
+        @foreach ( $images as $key => $image )
+        <div class="carousel-item {{$key == 0 ? 'active' : '' }} ">
+            <img class="d-block w-100" style="object-fit:cover;" src="{{ asset($image->image) }}" alt="">
+        </div>
+        @endforeach
+    </div>
+</div> 
+
 @if(Session::has('message'))
 <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
 @endif
+
+@foreach ( $images as $key => $image )
+                            <div class="carousel-inner">
+                                <div class="carousel-item {{$key == 0 ? 'active' : '' }}">
+                                    <img class="d-block w-100" style="object-fit:cover;" src="{{ asset($image->image) }}" alt="">
+                                </div>
+                            </div>
+                        @endforeach
+                        
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;

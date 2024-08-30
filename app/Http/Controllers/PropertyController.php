@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Property;
 use App\Http\Requests\PropertyContactRequest;
+use App\Models\ImageUpload;
 
 class PropertyController extends Controller
 {
@@ -33,15 +34,14 @@ class PropertyController extends Controller
 
     public function show(string $slug, Property $property)
     {
-        
         $expectedSlug = $property->getSlug();
         if($slug !== $expectedSlug){
             return to_route('property.show', ['slug' => $expectedSlug, 'property' => $property]);
         }
-        //$property->images);
+        $images = ImageUpload::where('property_id', $property->id)->get();
         return view('property.show', [
             'property' => $property,
-            'images' => $property->images
+            'images' => $images
         ]);
     } 
 
