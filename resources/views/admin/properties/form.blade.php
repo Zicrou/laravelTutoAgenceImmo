@@ -7,7 +7,6 @@
     <form class="vstack gap-2" action="{{ route($property->exists ? 'admin.property.update' : 'admin.property.store', $property) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method($property->exists ? 'put' : 'post')
-        <input type="file" class="form-control" name="image[]" multiple />
         <div class="row">
         
         <div class="col row">

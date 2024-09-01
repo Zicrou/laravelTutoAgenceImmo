@@ -10,8 +10,7 @@ use App\Models\ImageUpload;
 class HomeController extends Controller
 {
     public function index(){
-        $properties = Property::available()->recent()->limit(6)->get();
-        
+        $properties = Property::available()->recent()->limit(6)->with('images')->get();
         return view('home', ['properties' => $properties]);
     }
 }

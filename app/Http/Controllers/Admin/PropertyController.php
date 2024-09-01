@@ -56,64 +56,13 @@ class PropertyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        
-        $data = $this->validate($request, [
-            'title' => ['required', 'min:8'],
-            'description' => ['required', 'min:8'],
-            'surface' => ['required', 'integer', 'min:10'],
-            'rooms' => ['required','integer', 'min:1'],
-            'bedrooms' => ['required', 'integer', 'min:0'],
-            'floor' => ['required', 'integer', 'min:0'],
-            'price' => ['required', 'integer', 'min:0'],
-            'city' => ['required', 'min:4'],
-            'address' => ['required', 'min:8'],
-            'postal_code' => ['required', 'min:3'],
-            'sold' => ['required', 'boolean'],
-            'options' => ['array', 'exists:options,id', 'required'],
-            'image.*' => 'nullable|image|mimes:jpg,jpeg,png,bmp,webp'
-            ]);
-
-            if($request->hasFile('image'))
-            {
-                $allowedfileExtension=['pdf', 'webp','jpg', 'jpeg','png','docx'];
-                $files = $request->file('image')[0];
-                $filename = $files->getClientOriginalName();
-                $extension = $files->getClientOriginalExtension();
-                $imageName = time().'-'.uniqid().'_'.$filename;
-                $path = 'images/uploads/property/';
-                $data['image'] = $files->move($path, $imageName);
-            }
-
-            $property = Property::create([
-                'title' => $request->title,
-                'description' => $request->description,
-                'surface' => $request->surface,
-                'rooms' => $request->rooms,
-                'bedrooms' => $request->bedrooms,
-                'floor' => $request->floor,
-                'price' => $request->price,
-                'city' => $request->city,
-                'address' => $request->address,
-                'postal_code' => $request->postal_code,
-                'sold' => $request->sold,
-                'options' => $request->options,
-                'image' => $path.$imageName
-            ]);
-        
-        /**
-         * @var UploadedFile|null $image
-         */
-            
-        // Enregistrer la property aprés $check is true ou bien l'enregistrer ici directement
-        
-        $property->options()->sync($request->validate(['options']));
+    public function store(PropertyFormRequest $request)
+    {   
+        $property = Property::create($request->validated());
+        $property->options()->sync($request->validated('options'));
         return to_route('admin.property.index')->with('success', 'Le bien a bien été modifié');
     }
-
-     
-
+    
     /**
      * Show the form for editing the specified resource.
      */
@@ -131,66 +80,8 @@ class PropertyController extends Controller
      */
     public function update(PropertyFormRequest $request, Property $property)
     {
-        $data = $request->validated();
-        // $data = $this->validate($request, [
-        //     'title' => ['required', 'min:8'],
-        //     'description' => ['required', 'min:8'],
-        //     'surface' => ['required', 'integer', 'min:10'],
-        //     'rooms' => ['required','integer', 'min:1'],
-        //     'bedrooms' => ['required', 'integer', 'min:0'],
-        //     'floor' => ['required', 'integer', 'min:0'],
-        //     'price' => ['required', 'integer', 'min:0'],
-        //     'city' => ['required', 'min:4'],
-        //     'address' => ['required', 'min:8'],
-        //     'postal_code' => ['required', 'min:3'],
-        //     'sold' => ['required', 'boolean'],
-        //     'options' => ['array', 'exists:options,id', 'required'],
-        //     'image.*' => 'nullable|mimes:jpg,jpeg,png,bmp,webp'
-        //     ]);
-
-            //if ($property) {
-                //if($request->hasFile('image'))
-                //{
-                    //$allowedfileExtension=['pdf', 'webp','jpg', 'jpeg','png','docx'];
-                    $files = $request->file('image')[0];
-                    $filename = $files->getClientOriginalName();
-                    //$extension = $files->getClientOriginalExtension();
-                    $imageName = time().'-'.uniqid().'_'.$filename;
-                    $path = 'images/uploads/property/';
-                    $data['image'] = $files->move($path, $imageName);
-                //}
-
-                if (File::exists($property->image)) {
-                    File::delete($property->image);
-                }
-            //}
-            
-            $property->image = $path.$imageName;
-            $property->update([$data]);
-
-            // $property->update([
-            //     'title' => $request->title,
-            //     'description' => $request->description,
-            //     'surface' => $request->surface,
-            //     'rooms' => $request->rooms,
-            //     'bedrooms' => $request->bedrooms,
-            //     'floor' => $request->floor,
-            //     'price' => $request->price,
-            //     'city' => $request->city,
-            //     'address' => $request->address,
-            //     'postal_code' => $request->postal_code,
-            //     'sold' => $request->sold,
-            //     'options' => $request->options,
-            //     'image' => $path.$imageName
-            // ]);
-        $property->options()->sync($request->validate(['options']));
-        //$property->update($this->extractData($property, $request));
-        // foreach ($request->image as $img) {
-        //     $img = ImageUpload::create([
-        //         'property_id' => $property->id,
-        //         'image' => $imageName,
-        //     ]);
-        // }
+        $property->options()->sync($request->validated('options'));
+        $property->update($request->validated());
         return to_route('admin.property.index')->with('success', 'Le bien a bien été modifié');
     }
 

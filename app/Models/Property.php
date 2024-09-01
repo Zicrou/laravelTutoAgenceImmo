@@ -22,7 +22,7 @@ class Property extends Model
     use SoftDeletes;
 
 
-    protected $fillable =[
+    protected $fillable = [
         'title', //=> ['','',''],
         'description', //=> ['','',''],
         'surface', //=> ['','',''],
@@ -34,7 +34,6 @@ class Property extends Model
         'address', //=> ['','',''],
         'postal_code', //=> ['','',''],
         'sold', //=> ['','','']
-        'image'
     ];
 
     public function options(): BelongsToMany
