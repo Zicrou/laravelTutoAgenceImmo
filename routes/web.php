@@ -62,7 +62,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     ->name('delete.image')
     ->where([
         'property' => $idRegex,
-    ]);
+    ])
+    ->can('delete', 'imageUpload');
 });
 
 Route::middleware('auth')->group(function () {
