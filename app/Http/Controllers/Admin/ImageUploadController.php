@@ -13,6 +13,10 @@ use Illuminate\Validation\Rules\ImageFile;
 
 class ImageUploadController extends Controller
 {
+    public function __construct()
+    {
+        //$this->authorize(ImageUpload::class, 'image_upload');
+    }
     public function index(Property $property)
     {
         $propertyImages = $property->images()->get();
@@ -42,6 +46,7 @@ class ImageUploadController extends Controller
     public function destroy($imageUpload)
     {
         $image = ImageUpload::findOrFail($imageUpload);
+        //dd($this->authorize('delete', $image));
         if (File::exists($image->image)) {
             File::delete($image->image);
         }

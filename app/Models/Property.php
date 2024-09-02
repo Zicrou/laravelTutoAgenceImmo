@@ -41,6 +41,15 @@ class Property extends Model
         return $this->belongsToMany(Option::class);
     }
 
+    public function pictures() : HasMany
+    {
+        return $this->hasMany(Picture::class);
+    }
+
+    public function propertyPictures() : HasMany
+    {
+        return $this->hasMany(PropertyPicture::class, 'property_id');
+    }
     public function images(): HasMany
     {
         return $this->hasMany(ImageUpload::class);
@@ -61,7 +70,7 @@ class Property extends Model
         return $builder->orderBy('created_at', 'desc');
     }
 
-    public function imageUrl(): string{
-        return Storage::disk('public')->url($this->images);
-    }
+    // public function imageUrl(): string{
+    //     return Storage::disk('public')->url($this->images);
+    // }
 }

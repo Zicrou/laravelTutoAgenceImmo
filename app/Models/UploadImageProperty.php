@@ -20,7 +20,5 @@ class UploadImageProperty extends Model
     protected $fillable =[
         'image_upload_id',
         'property_id',
-    ];
-
-    
+    ];    
 }
