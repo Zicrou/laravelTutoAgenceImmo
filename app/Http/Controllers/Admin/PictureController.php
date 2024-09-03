@@ -20,8 +20,10 @@ class PictureController extends Controller
     }
     public function index(Property $property)
     {
-        $propertyPictures = $property->pictures()->get();
-        //$property = $property->pictures()->get();
+        //$picture = Picture::where('id', 44)->get();
+        //$propertyPictures = $property->propertyPictures()->get();
+        $property = $property->propertyPictures()->get();
+        dd($property);
         //PropertyPicture::with('property')->get();
         //$property->propertyPictures()->get();
         //$pic = Picture::where('property_id', $property->id)->get();

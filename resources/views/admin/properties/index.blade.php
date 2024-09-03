@@ -29,7 +29,8 @@
                     <td>{{ $property->city }}</td>
                     <td>
                         <div class="d-flex gap-2 w-100 justify-content-end">
-                            <a href="{{ route('admin.upload.image', $property) }}" class="btn btn-primary">Add / View images</a>
+                            <a href="{{ route('admin.upload.image', $property) }}" class="btn btn-primary">Images</a>
+                            <a href="{{ route('admin.picture.index', $property) }}" class="btn btn-primary">Picture</a>
                             <a href="{{ route('admin.property.edit', $property) }}" class="btn btn-primary">Editer</a>
                             @can('delete', $property)
                                 <form action="{{ route('admin.property.destroy', $property) }}" method="post">
