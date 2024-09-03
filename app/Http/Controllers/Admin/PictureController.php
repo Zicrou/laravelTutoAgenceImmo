@@ -16,14 +16,12 @@ class PictureController extends Controller
 {
     public function __construct()
     {
-        //$this->authorize(Picture::class, 'image_upload');
+        //$this->authorize(Picture::class, 'picture');
     }
     public function index(Property $property)
     {
-        //$picture = Picture::where('id', 44)->get();
-        //$propertyPictures = $property->propertyPictures()->get();
-        $property = $property->propertyPictures()->get();
-        dd($property);
+        $propertyPictures = $property->pictures()->get();
+        //$property = $property->pictures()->get();
         //PropertyPicture::with('property')->get();
         //$property->propertyPictures()->get();
         //$pic = Picture::where('property_id', $property->id)->get();
@@ -57,12 +55,15 @@ class PictureController extends Controller
     public function destroy($picture)
     {
         $image = Picture::findOrFail($picture);
-        //dd($this->authorize('delete', $image));
+
+        //dd($image);
         if (File::exists($image->image)) {
             File::delete($image->image);
         }
         $image->delete();
 
+        //return to_route('admin.picture.index', $property)->with('success', 'Le bien a bien été créé');
+        
         return redirect()->back()->with('status', 'Image supprimé');
     }
 }

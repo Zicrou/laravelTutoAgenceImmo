@@ -42,15 +42,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     Route::resource('option', \App\Http\Controllers\Admin\OptionController::class)->except(['show']);
     
     // Picture Index
-    Route::get('picture/{property}', [\App\Http\Controllers\Admin\PictureController::class, 'index'])
+    Route::get('property/{property}/picture', [\App\Http\Controllers\Admin\PictureController::class, 'index'])
     ->name('picture.index')
     ->where([
         'property' => $idRegex,
     ]);
 
     // Picture Destroy
-    Route::delete('picture/{property}', [\App\Http\Controllers\Admin\PictureController::class, 'destroy'])
-    ->name('picture.destroy')
+    Route::get('picture/{property}', [\App\Http\Controllers\Admin\PictureController::class, 'destroy'])
+    ->name('delete.picture')
     ->where([
         'property' => $idRegex,
     ]);
@@ -80,7 +80,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     ->where([
         'property' => $idRegex,
     ]);
-    //->can('delete', 'imageUpload');
+    
 });
 
 Route::middleware('auth')->group(function () {

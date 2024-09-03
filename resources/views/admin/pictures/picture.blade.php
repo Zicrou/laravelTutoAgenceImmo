@@ -41,7 +41,7 @@
                 <div class="d-flex">
                 @foreach ( $propertyPictures as $image )
                     <img class="border p-2 m-2" src="{{ asset($image->image) }}" alt="image" style="width:400px;height:275px">
-                    <a href="{{ route('admin.picture.destroy', $image->id) }}">Delete</a>
+                    <a href="{{ route('admin.delete.picture', $image->id) }}">Delete</a>
                 @endforeach
                 </div>
             </div>
