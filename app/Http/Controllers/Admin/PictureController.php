@@ -9,8 +9,7 @@ use \App\Models\Property;
 use \App\Models\PropertyPicture;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\PictureFilterRequest;
-
-
+use Illuminate\Support\Facades\Auth;
 
 class PictureController extends Controller
 {
@@ -55,15 +54,15 @@ class PictureController extends Controller
     public function destroy($picture)
     {
         $image = Picture::findOrFail($picture);
-
-        //dd($image);
-        if (File::exists($image->image)) {
+        if(Auth::user()->can('delete', $image))
+        {
+            if (File::exists($image->image)) {
             File::delete($image->image);
-        }
-        $image->delete();
-
-        //return to_route('admin.picture.index', $property)->with('success', 'Le bien a bien été créé');
-        
-        return redirect()->back()->with('status', 'Image supprimé');
+            }
+            $image->delete();        
+            return redirect()->back()->with('status', 'Image supprimé');
+        }else{
+            return redirect()->back()->with('status', 'Impossible de supprimé l\'image');
+        }        
     }
 }
