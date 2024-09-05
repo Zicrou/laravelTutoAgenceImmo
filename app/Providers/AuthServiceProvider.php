@@ -4,10 +4,11 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
-use App\Models\ImageUpload;
+use App\Models\Picture;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Models\Property;
 use App\Policies\ImageUploadPolicy;
+use App\Policies\PicturePolicy;
 use App\Policies\PropertyPolicy;
 
 class AuthServiceProvider extends ServiceProvider
@@ -19,7 +20,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Property::class => PropertyPolicy::class,
-        ImageUpload::class => ImageUploadPolicy::class
     ];
 
     /**

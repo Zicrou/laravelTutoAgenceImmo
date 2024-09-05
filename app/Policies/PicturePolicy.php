@@ -45,7 +45,7 @@ class PicturePolicy
      */
     public function delete(User $user, Picture $picture): bool
     {
-        return $user->role === 'admin';
+        return $user->role == 'admin';
     }
 
     /**

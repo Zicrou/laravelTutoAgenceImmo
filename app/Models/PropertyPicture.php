@@ -21,7 +21,8 @@ class PropertyPicture extends Model
         return $this->belongsTo(Property::class);
     }
 
-    public function pictures(): HasMany{
+    public function picture(): hasMany{
         return $this->hasMany(Picture::class);
     }
+
 }

@@ -9,14 +9,13 @@ use \App\Models\Property;
 use \App\Models\PropertyPicture;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\PictureFilterRequest;
-
-
+use Illuminate\Support\Facades\Auth;
 
 class PictureController extends Controller
 {
     public function __construct()
     {
-        //$this->authorize(Picture::class, 'image_upload');
+        //$this->authorize(Picture::class, 'picture');
     }
     public function index(Property $property)
     {
@@ -55,12 +54,15 @@ class PictureController extends Controller
     public function destroy($picture)
     {
         $image = Picture::findOrFail($picture);
-        //dd($this->authorize('delete', $image));
-        if (File::exists($image->image)) {
+        if(Auth::user()->can('delete', $image))
+        {
+            if (File::exists($image->image)) {
             File::delete($image->image);
-        }
-        $image->delete();
-
-        return redirect()->back()->with('status', 'Image supprimé');
+            }
+            $image->delete();        
+            return redirect()->back()->with('status', 'Image supprimé');
+        }else{
+            return redirect()->back()->with('status', 'Impossible de supprimé l\'image');
+        }        
     }
 }

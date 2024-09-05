@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Picture extends Model
 {
@@ -18,7 +19,9 @@ class Picture extends Model
         return $this->belongsTo(Property::class);
     }
 
-    // public function propertyPicture(): HasOneOrMany{
-    //     return $this->HasOneOrMany(PropertyPicture::class, 'picture_id');
-    // }
+    
+
+    public function propertyPicture(): BelongsTo{
+        return $this->belongsTo(PropertyPicture::class);
+    }
 }
