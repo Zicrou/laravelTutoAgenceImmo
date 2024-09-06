@@ -46,7 +46,7 @@ class PictureController extends Controller
                     'picture_id' => $picture->id,
                     'property_id' => $property->id
                 ]);
-            } 
+            }
         }
         return to_route('admin.picture.index', $property)->with('success', 'Le bien a bien été créé');
     }
@@ -59,10 +59,10 @@ class PictureController extends Controller
             if (File::exists($image->image)) {
             File::delete($image->image);
             }
-            $image->delete();        
-            return redirect()->back()->with('status', 'Image supprimé');
+            $image->delete();
+            return redirect()->back()->with('status', 'Image supprimée');
         }else{
-            return redirect()->back()->with('status', 'Impossible de supprimé l\'image');
-        }        
+            return redirect()->back()->with('status', 'Impossible de supprimer l\'image');
+        }
     }
 }
