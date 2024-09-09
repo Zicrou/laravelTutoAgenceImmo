@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\Property;
 use App\Http\Requests\PropertyContactRequest;
 use App\Models\ImageUpload;
+use App\Events\ContactRequestEvent;
+use App\Jobs\DemoJob;
+use App\Models\User;
+use App\Notifications\ContactRequestNotification;
 
 class PropertyController extends Controller
 {
@@ -34,6 +38,9 @@ class PropertyController extends Controller
 
     public function show(string $slug, Property $property)
     {
+        /** @var User $user */
+        //$user = User::first();
+        DemoJob::dispatch($property)->delay(now()->addSeconds(10));
         $expectedSlug = $property->getSlug();
         if($slug !== $expectedSlug){
             return to_route('property.show', ['slug' => $expectedSlug, 'property' => $property]);
@@ -48,7 +55,10 @@ class PropertyController extends Controller
 
     public function contact(Property $property, PropertyContactRequest $request)
     {
-        Mail::send(new PropertyContactMail($property, $request->validated()));
+        /** @var User $user */
+        $user = User::first();
+        $user->notify(new ContactRequestNotification($property, $request->validated()));
+        event(new ContactRequestEvent($property, $request->validated()) );
         return back()->with('success', 'votre demande de contact a bien été envoyé');
     }
     

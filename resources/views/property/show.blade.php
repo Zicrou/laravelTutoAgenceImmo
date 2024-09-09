@@ -42,7 +42,7 @@
                             </button>
                             <button class="carousel-control-next" type="button" data-bs-target="#carouselDemo" data-bs-slide="next">
                                 <span class="carousel-control-next-icon"></span>
-                            </button>
+                            </button> 
                             <div class="carousel-indicators">
                                 @for ($i = 0; $i >= $images->count(); $i++)
                                     <button type="button" class="border"></button>            
@@ -59,22 +59,22 @@
                         {{ number_format($property->price, thousands_separator: ' ') }}£
                     </div>
 
-                    <h4>Intéressé par ce bien ?</h4>
+                    <h4>{{ __('Interested in this property :title ?', ['title' => $property->title]) }}</h4>
                     @include('shared.flash')
 
                     <form action="{{ route('property.contact', $property) }}" method="post" class="vstack gap-3">
                         @csrf
                         <div class="row">
-                            @include('shared.input', ['class' => 'col', 'name' => 'firstname', 'label' => 'Prénom'])
-                            @include('shared.input', ['class' => 'col', 'name' => 'lastname', 'label' => 'Nom'])
+                            @include('shared.input', ['class' => 'col', 'name' => 'firstname', 'label' => 'Prénom', 'value' => 'John'])
+                            @include('shared.input', ['class' => 'col', 'name' => 'lastname', 'label' => 'Nom', 'value' => 'Doe'])
                         </div>
 
                         <div class="row">
-                            @include('shared.input', ['class' => 'col', 'name' => 'phone', 'label' => 'Téléphone'])
-                            @include('shared.input', ['type' => 'email', 'class' => 'col', 'name' => 'email', 'label' => 'Email'])
+                            @include('shared.input', ['class' => 'col', 'name' => 'phone', 'label' => 'Téléphone', 'value' => '0000000000'])
+                            @include('shared.input', ['type' => 'email', 'class' => 'col', 'name' => 'email', 'label' => 'Email', 'value' => 'john@doe.fr'])
                         </div>
 
-                        @include('shared.input', ['type' => 'textarea', 'class' => 'col', 'name' => 'message', 'label' => 'Votre message'])
+                        @include('shared.input', ['type' => 'textarea', 'class' => 'col', 'name' => 'message', 'label' => 'Votre message', 'value' => 'Description'])
                         <div>
                             <button class="btn btn-primary">
                                 Nous contacter
