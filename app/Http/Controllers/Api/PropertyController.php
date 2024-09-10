@@ -13,7 +13,7 @@ class PropertyController extends Controller
     public function index()
     {
         //return Property::paginate(5);
-        //return new PropertyCollection(Property::limit(5)->with('options')->get());
-        return new PropertyResource(Property::find(1));
+        return new PropertyCollection(Property::limit(5)->with('options')->get());
+        //return new PropertyResource(Property::find(1));
     }
 }
