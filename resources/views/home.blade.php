@@ -2,11 +2,12 @@
 
 @section('content')
     @php
-        $title="Accueil";
+        $title = 'Accueil';
 
-        // $type = 'info';
-        // $type = 'danger';
-        // $type = 'success';
+        // Commenter ligne par ligne en partant du bas pour voir les différences
+        $type = 'info';
+        $type = 'danger';
+        $type = 'success';
         $type = 'warning';
 
     @endphp
