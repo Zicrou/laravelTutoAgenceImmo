@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('title', $property->title)
+@section('title', Str::limit($property->title, 20))
 
 @section('content')
     <style>
