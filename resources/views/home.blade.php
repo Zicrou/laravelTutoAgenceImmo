@@ -2,10 +2,13 @@
 
 @section('content')
     @php
+        $title="Accueil";
+
         // $type = 'info';
         // $type = 'danger';
         // $type = 'success';
         $type = 'warning';
+
     @endphp
 
     <x-alert type="{{ $type }}">
