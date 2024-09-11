@@ -59,7 +59,13 @@ class Property extends Model
     {
         return Str::slug($this->title);
     }
+	public function getFormatedPrice()
+	{
+		$formatedPrice = number_format($this->price, 0, ',', ' ');
+		$formatedPrice = str_replace(' ', '&nbsp;', $formatedPrice);
 
+		return $formatedPrice . '&nbsp;€';
+	}
     public function scopeAvailable(Builder $builder, bool $available = true): Builder
     {
         return $builder->where('sold', !$available);

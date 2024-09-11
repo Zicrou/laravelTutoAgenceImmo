@@ -1,12 +1,10 @@
-<div class="card">
+<div @class(['card', 'sold' => $property->sold == 1]) style="m-0 p-0 min-width: 124px;">
     <div class="card-body">
         <h5 class="card-title">
-            <a href="{{ route('property.show', ['slug' => $property->getSlug(), 'property' => $property]) }}">{{ $property->title }}</a>
+            <a
+                href="{{ route('property.show', ['slug' => $property->getSlug(), 'property' => $property]) }}">{{ $property->title }}</a>
         </h5>
-        <img style="width:100%; height:100%; object-fit:cover;" src="{{ asset($property->images->first()->image?? ' ') }}" alt="">
-        <p class="card-text">{{ $property->surface }}m² - {{ $property->city }} ({{ $property->postal_code }})</p>
-        <div class="text-primary fw-bold" style="font-size: 1.4rem;">
-            {{ number_format($property->price, thousands_separator: ' ') }}£
-        </div>
+        <p class="card-text">{{ $property->surface }} m² - {{ $property->city }} ({{ $property->postal_code }})</p>
+        <div class="text-primary fw-bold" style="font-size: 1.4rem;">{!! $property->getFormatedPrice() !!}</div>
     </div>
 </div>
