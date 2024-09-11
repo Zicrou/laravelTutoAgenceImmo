@@ -40,16 +40,19 @@ class PropertyController extends Controller
 	{
 		// @var User $user
 		// $user = User::first();
-		DemoJob::dispatch($property)->delay(now()->addSeconds(10));
+		// DemoJob::dispatch($property)->delay(now()->addSeconds(10));
 		$expectedSlug = $property->getSlug();
 		if ($slug !== $expectedSlug) {
-			return to_route('property.show', ['slug' => $expectedSlug, 'property' => $property]);
+			return to_route('property.show', [
+				'slug'     => $expectedSlug,
+				'property' => $property,
+			]);
 		}
-		$images = ImageUpload::where('property_id', $property->id)->get();
+		// $images = ImageUpload::where('property_id', $property->id)->get();
 
 		return view('property.show', [
 			'property' => $property,
-			'images'   => $images,
+			// 'images'   => $images,
 		]);
 	}
 
