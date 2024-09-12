@@ -19,24 +19,24 @@
         <div class="mt-4">
             <div class="row">
                 <div class="col">
-                    <div class="carousel slide" id="carouselDemo" data-bs-wrap="true" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        @foreach ($images as $key => $image )
-                                <button type="button" data-bs-target="#carouselDemo" data-bs-slide-to="{{$key}}" class="{{ $key == 0 ? 'active' : '' }}" aria-current="true" aria-label="Slide {{ $key }}" >
-                                    <img src="{{ asset($image->image) }}" alt=""/>
-                                </button>
-                        @endforeach
-                        
-                    </div>
+                   @if ($images->count() !== 0)
+                   <div class="carousel slide" id="carouselDemo" data-bs-wrap="true" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            @foreach ($images as $key => $image )
+                                    <button type="button" data-bs-target="#carouselDemo" data-bs-slide-to="{{$key}}" class="{{ $key == 0 ? 'active' : '' }}" aria-current="true" aria-label="Slide {{ $key }}" >
+                                        <img src="{{ asset($image->image) }}" alt=""/>
+                                    </button>
+                            @endforeach
+                        </div>
                         <div class="carousel-inner">
-                        @foreach ($images as $key => $image )
-                            <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                                <img class="d-block w-100" style="object-fit:cover;" src="{{ asset($image->image) }}" alt="">
-                                <div class="carousel-caption">
-                                    <h5>{{ $property->title }}</h5>
+                            @foreach ($images as $key => $image )
+                                <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                                    <img class="d-block w-100" style="object-fit:cover;" src="{{ asset($image->image) }}" alt="">
+                                    <div class="carousel-caption">
+                                        <h5>{{ $property->title }}</h5>
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselDemo" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon"></span>
                             </button>
@@ -50,6 +50,8 @@
                             </div>
                         </div>
                     </div>
+                   @endif
+                    
                 </div>
                 <div class="col">
                     <h1><strong>{{ $property->title }}</strong></h1>
