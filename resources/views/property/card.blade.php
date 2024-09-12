@@ -2,8 +2,9 @@
     <div class="card-body">
         <h5 class="card-title">
             <a
-                href="{{ route('property.show', ['slug' => $property->getSlug(), 'property' => $property]) }}">{{ $property->title }}</a>
+                href="{{ route('property.show', ['slug' => $property->getSlug(), 'property' => $property]) }}">{{ Str::limit($property->title, 40) }}</a>
         </h5>
+        <hr>
         <p class="card-text">{{ $property->surface }} m² - {{ $property->city }} ({{ $property->postal_code }})</p>
         <div class="text-primary fw-bold" style="font-size: 1.4rem;">{!! $property->getFormatedPrice() !!}</div>
     </div>
