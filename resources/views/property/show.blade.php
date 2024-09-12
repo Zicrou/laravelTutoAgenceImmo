@@ -1,19 +1,20 @@
-@extends('base')
+@extends('layouts.base')
 
-@section('title', $property->title)
+@section('title', Str::limit($property->title, 20))
 
 @section('content')
-<style>
-    .carousel-indicators img{
-        width: 70px;
-        display: block;
-    }
-    .carousel-indicators button{
-        width: max-content!important;
-    }
-</style>
+    <style>
+        .carousel-indicators img {
+            width: 70px;
+            display: block;
+        }
+
+        .carousel-indicators button {
+            width: max-content !important;
+        }
+    </style>
     <div class="container mt-4">
-        
+
         <hr>
 
         <div class="mt-4">
@@ -40,12 +41,13 @@
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselDemo" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon"></span>
                             </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselDemo" data-bs-slide="next">
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselDemo"
+                                data-bs-slide="next">
                                 <span class="carousel-control-next-icon"></span>
-                            </button> 
+                            </button>
                             <div class="carousel-indicators">
                                 @for ($i = 0; $i >= $images->count(); $i++)
-                                    <button type="button" class="border"></button>            
+                                    <button type="button" class="border"></button>
                                 @endfor
                             </div>
                         </div>
@@ -67,16 +69,43 @@
                     <form action="{{ route('property.contact', $property) }}" method="post" class="vstack gap-3">
                         @csrf
                         <div class="row">
-                            @include('shared.input', ['class' => 'col', 'name' => 'firstname', 'label' => 'Prénom', 'value' => 'John'])
-                            @include('shared.input', ['class' => 'col', 'name' => 'lastname', 'label' => 'Nom', 'value' => 'Doe'])
+                            @include('shared.input', [
+                                'class' => 'col',
+                                'name' => 'firstname',
+                                'label' => 'Prénom',
+                                'value' => 'John',
+                            ])
+                            @include('shared.input', [
+                                'class' => 'col',
+                                'name' => 'lastname',
+                                'label' => 'Nom',
+                                'value' => 'Doe',
+                            ])
                         </div>
 
                         <div class="row">
-                            @include('shared.input', ['class' => 'col', 'name' => 'phone', 'label' => 'Téléphone', 'value' => '0000000000'])
-                            @include('shared.input', ['type' => 'email', 'class' => 'col', 'name' => 'email', 'label' => 'Email', 'value' => 'john@doe.fr'])
+                            @include('shared.input', [
+                                'class' => 'col',
+                                'name' => 'phone',
+                                'label' => 'Téléphone',
+                                'value' => '0000000000',
+                            ])
+                            @include('shared.input', [
+                                'type' => 'email',
+                                'class' => 'col',
+                                'name' => 'email',
+                                'label' => 'Email',
+                                'value' => 'john@doe.fr',
+                            ])
                         </div>
 
-                        @include('shared.input', ['type' => 'textarea', 'class' => 'col', 'name' => 'message', 'label' => 'Votre message', 'value' => 'Description'])
+                        @include('shared.input', [
+                            'type' => 'textarea',
+                            'class' => 'col',
+                            'name' => 'message',
+                            'label' => 'Votre message',
+                            'value' => 'Description',
+                        ])
                         <div>
                             <button class="btn btn-primary">
                                 Nous contacter
@@ -113,7 +142,7 @@
                     <tr>
                         <td>Localisation</td>
                         <td>
-                            {{ $property->address }}<br/>
+                            {{ $property->address }}<br />
                             {{ $property->city }} {{ $property->postal_code }}
                         </td>
                     </tr>
@@ -130,5 +159,5 @@
 
         </div>
     </div>
-    
+
 @endsection
