@@ -32,7 +32,7 @@ class PictureController extends Controller
                 $filename = $image->getClientOriginalName();
                 $imageName = time().'-'.uniqid().'_'.$filename;
                 $path = 'pictures/property/'.$property->id.'/';
-                //$image->storeAs($path, $imageName, 's3'); 
+                $image->storeAs($path, $imageName, 's3'); 
 
                 $image->move($path, $imageName);
                 $picture = Picture::create([
