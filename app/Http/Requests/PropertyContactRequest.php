@@ -25,7 +25,7 @@ class PropertyContactRequest extends FormRequest
             'firstname' => ['required', 'string', 'min:2'],
             'lastname' => ['required', 'string', 'min:2'],
             'phone' => ['required', 'string', 'min:10'],
-            'email' => ['required', 'email', 'min:4'],
+            'email' => ['required', 'email'],
             'message' => ['required', 'string', 'min:4'],
         ];
     }

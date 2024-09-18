@@ -38,10 +38,12 @@
             </div>
             <div class="col-md-12 mt-4">
                 <div class="d-flex">
-                @foreach ( $propertyPictures as $image )
-                    <img class="border p-2 m-2" src="{{ asset($image->image) }}" alt="image" style="width:400px;height:275px">
-                    <a href="{{ route('admin.picture.destroy', $image->id) }}">Delete</a>
-                @endforeach
+                    @if ($propertyPictures->count() !==0 )
+                        @foreach ( $propertyPictures as $image )
+                            <img class="border p-2 m-2" src="{{ asset($image->image) }}" alt="image" style="width:400px;height:275px">
+                            <a href="{{ route('admin.picture.destroy', $image->id) }}">Delete</a>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
