@@ -20,11 +20,7 @@ class PictureController extends Controller
     public function index(Property $property)
     {
         $propertyPictures = $property->pictures()->get();
-        //$property = $property->pictures()->get();
-        //PropertyPicture::with('property')->get();
-        //$property->propertyPictures()->get();
-        //$pic = Picture::where('property_id', $property->id)->get();
-        //$propertyPictures = Property::where('product_id', $property->id)->get();
+        
         return view('admin.pictures.picture', ['property' => $property, 'propertyPictures' => $propertyPictures]);
     }
 
@@ -36,6 +32,7 @@ class PictureController extends Controller
                 $filename = $image->getClientOriginalName();
                 $imageName = time().'-'.uniqid().'_'.$filename;
                 $path = 'pictures/property/'.$property->id.'/';
+                $image->storeAs($path, $imageName, 's3'); 
 
                 $image->move($path, $imageName);
                 $picture = Picture::create([

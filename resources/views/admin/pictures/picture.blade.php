@@ -1,4 +1,4 @@
-@extends('base')
+@extends('layouts.base')
 
 @section('content')
 
@@ -8,7 +8,6 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="title" style="float:left;">
-                            
                             <h2 class="text-left">{{ $property->title }}y</h2>
                         </div>
                     </div>
@@ -39,10 +38,10 @@
             </div>
             <div class="col-md-12 mt-4">
                 <div class="d-flex">
-                @foreach ( $propertyPictures as $image )
-                    <img class="border p-2 m-2" src="{{ asset($image->image) }}" alt="image" style="width:400px;height:275px">
-                    <a href="{{ route('admin.delete.picture', $image->id) }}">Delete</a>
-                @endforeach
+                    @foreach ( $propertyPictures as $image )
+                        <img class="border p-2 m-2" src="{{ asset($image->image) }}" alt="image" style="width:400px;height:275px">
+                        <a href="{{ route('admin.delete.picture', $image->id) }}">Delete</a>
+                    @endforeach
                 </div>
             </div>
         </div>
