@@ -10,10 +10,10 @@
         <div class="row">
         
         <div class="col row">
-                    @include('shared.input', ['class' => 'col', 'label' => 'Titre', 'name' => 'title', 'value' => $property->title])
-                    @include('shared.input', ['class' => 'col', 'name' => 'surface', 'value' => $property->surface])
-                    @include('shared.input', ['class' => 'col', 'name' => 'price', 'label' => 'Prix', 'value' => $property->price])
-                </div>
+            @include('shared.input', ['class' => 'col', 'label' => 'Titre', 'name' => 'title', 'value' => $property->title])
+            @include('shared.input', ['class' => 'col', 'name' => 'surface', 'value' => $property->surface])
+            @include('shared.input', ['class' => 'col', 'name' => 'price', 'label' => 'Prix', 'value' => $property->price])
+        </div>
         </div>
         @include('shared.input', ['type' => 'textarea', 'class' => 'col', 'name' => 'description', 'value' => $property->description])
         <div class="row">
